@@ -8,6 +8,9 @@
 # PLATFORM = altera
 # PLATFORM = aducm3029
 
+
+LINK_SRCS		?= y
+
 PROJECT			?= $(realpath .)
 TARGET 			?= $(notdir $(realpath .))
 NO-OS			?= $(realpath ../..)
