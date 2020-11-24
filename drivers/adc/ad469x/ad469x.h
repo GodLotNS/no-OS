@@ -257,6 +257,8 @@ struct ad469x_dev {
 	bool temp_enabled;
 	/** Number of active channel slots, for advanced sequencer */
 	uint8_t num_slots;
+	/** Active channel mask */
+	uint8_t ch_mask;
 };
 
 /******************************************************************************/

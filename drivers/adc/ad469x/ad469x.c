@@ -47,6 +47,7 @@
 #include "spi_engine.h"
 #include "delay.h"
 #include "error.h"
+#include "util.h"
 
 /******************************************************************************/
 /********************** Macros and Constants Definitions **********************/
@@ -497,6 +498,8 @@ int32_t ad469x_std_sequence_ch(struct ad469x_dev *dev, uint16_t ch_mask)
 	if (ret != SUCCESS)
 		return ret;
 
+	dev->ch_mask = ch_mask;
+
 	return ret;
 }
 
@@ -670,7 +673,7 @@ int32_t ad469x_seq_read_data(struct ad469x_dev *dev,
 	int32_t ret;
 	uint16_t i;
 
-	ret = ad469x_read_data(dev, 0, buf, samples);
+	ret = ad469x_read_data(dev, 0, buf, samples * hweight8(dev->ch_mask));
 	if (ret != SUCCESS)
 		return ret;
 
@@ -786,6 +789,7 @@ int32_t ad469x_init(struct ad469x_dev **device,
 	dev->ch_sequence = AD469x_standard_seq;
 	dev->num_slots = 0;
 	dev->temp_enabled = false;
+	dev->ch_mask = 0;
 	memset(dev->ch_slots, 0, sizeof(dev->ch_slots));
 
 	ret = ad469x_spi_reg_write(dev, AD469x_REG_SCRATCH_PAD, AD469x_TEST_DATA);
